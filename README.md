@@ -1,3 +1,5 @@
+Découvrez ici mon Pokédex ! J'espère que vous l'apprécierez ;) - Sarah HITIER
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
