@@ -1,11 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+
 import App from "./App";
+import { List, TypesList, Favoris, Contact } from "containers";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            { path: "/", element: <List /> },
+            { path: "/types-list", element: <TypesList /> },
+            { path: "/favorites", element: <Favoris /> },
+            { path: "/contact", element: <Contact /> }
+        ]
+    }
+]);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(<RouterProvider router={router} />);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
