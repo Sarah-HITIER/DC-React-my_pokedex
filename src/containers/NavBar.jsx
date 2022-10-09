@@ -39,7 +39,7 @@ export default function NavBar() {
                 <Toolbar disableGutters>
                     {/* logo visible on larger screens */}
                     <Link
-                        href=""
+                        href="/"
                         sx={{
                             display: { xs: "none", md: "flex" },
                             mr: 1,
@@ -100,7 +100,7 @@ export default function NavBar() {
 
                     {/* Logo visible on smaller screens */}
                     <Link
-                        href=""
+                        href="/"
                         sx={{
                             display: { xs: "flex", md: "none" },
                             mr: 1,
