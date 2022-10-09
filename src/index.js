@@ -1,19 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 
 import App from "./App";
-import { List, TypesList, Favoris, Contact } from "containers";
+import { MainList, TypesList, Favoris, Contact } from "containers";
+
+import "./index.css";
+
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./themes/theme.js";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import reportWebVitals from "./reportWebVitals";
+
+// import { ItemsListProvider } from "contexts/ItemsListContext";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
         children: [
-            { path: "/", element: <List /> },
+            { path: "/", element: <MainList /> },
             { path: "/types-list", element: <TypesList /> },
             { path: "/favorites", element: <Favoris /> },
             { path: "/contact", element: <Contact /> }
@@ -21,8 +28,22 @@ const router = createBrowserRouter([
     }
 ]);
 
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+    <ThemeProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+        </QueryClientProvider>
+    </ThemeProvider>
+
+    // <ItemsListProvider>
+    //     <QueryClientProvider client={queryClient}>
+    //         <RouterProvider router={router} />
+    //     </QueryClientProvider>
+    // </ItemsListProvider>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
