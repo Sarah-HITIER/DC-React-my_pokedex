@@ -1,33 +1,9 @@
-import List from "components/List";
+import { List, SearchBar } from "components/molecules";
+import { Loading } from "components/atoms";
 import { useItems } from "hooks";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { styled, InputBase, Pagination } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-
-const Search = styled("div")(({ theme }) => ({
-    display: "flex",
-    border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: theme.shape.borderRadius
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-    color: theme.palette.text.main,
-    backgroundColor: theme.palette.primary.main,
-    padding: theme.spacing(0, 2),
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: theme.palette.text.main,
-    width: "100%",
-    "& .MuiInputBase-input": {
-        padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: theme.spacing(2)
-    }
-}));
+import { styled, Pagination } from "@mui/material";
 
 const StyledPagination = styled(Pagination)(({ theme }) => ({
     marginTop: theme.spacing(2),
@@ -65,21 +41,14 @@ export default function MainList() {
         setPage(value);
     };
 
-    if (isLoading) return "Loading...";
+    if (isLoading) return <Loading />;
 
     return (
         <>
-            <Search>
-                <SearchIconWrapper>
-                    <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                    placeholder="Search…"
-                    inputProps={{ "aria-label": "search" }}
-                    value={searchValue}
-                    onChange={handleChange}
-                />
-            </Search>
+            <SearchBar
+                value={searchValue}
+                handleChange={handleChange}
+            ></SearchBar>
             <List items={filteredItems}></List>
             <StyledPagination
                 count={10}

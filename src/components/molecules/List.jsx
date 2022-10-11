@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import ListItem from "./ListItem";
+import { ListItem } from "../atoms";
 
 export default function List({ items = [] }) {
     if (items.length === 0) {
@@ -20,12 +20,8 @@ export default function List({ items = [] }) {
                 const id = paths[paths.length - 1];
 
                 return (
-                    <Grid item xs={6} sm={4} md={3}>
-                        <ListItem
-                            key={item.name}
-                            id={id}
-                            name={item.name}
-                        ></ListItem>
+                    <Grid key={id} item xs={6} sm={4} md={3}>
+                        <ListItem id={id} name={item.name}></ListItem>
                     </Grid>
                 );
             })}

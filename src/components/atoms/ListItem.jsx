@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
     styled,
     Card,
@@ -8,7 +7,10 @@ import {
     CardActions,
     Button
 } from "@mui/material";
+import { FavoriteBorder, Favorite } from "@mui/icons-material";
+import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { convertToUpperCase } from "utils";
 
 const StyledCard = styled(Card)(({ theme }) => ({
     color: theme.palette.text.main,
@@ -19,6 +21,12 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 export default function Item({ id, name }) {
+    const [favorites, setFavorites] = useState([]);
+
+    const handleFavorites = (event) => {
+        console.log("favorites" + name);
+    };
+
     return (
         <StyledCard sx={{ maxWidth: 345 }}>
             <CardMedia
@@ -29,41 +37,36 @@ export default function Item({ id, name }) {
                     id +
                     ".png"
                 }
-                alt="green iguana"
+                alt={convertToUpperCase(name)}
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                    {name.charAt(0).toUpperCase() + name.slice(1)}
+                    {convertToUpperCase(name)}
                 </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions
+                sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                }}
+            >
                 <Button
-                    // variant="primary"
+                    variant="contained"
                     component={RouterLink}
                     to={"/" + name}
                 >
                     Learn More
                 </Button>
+                <Button variant="contained" onClick={handleFavorites}>
+                    {favorites.includes(name) ? (
+                        <Favorite />
+                    ) : (
+                        <FavoriteBorder />
+                    )}
+                </Button>
             </CardActions>
         </StyledCard>
-
-        // <li>
-        //     <h2>
-        //         <Link
-        //             to="test"
-        //             // to={slugify(title, {
-        //             //     lower: true
-        //             // })}
-        //         >
-        //             <span
-        //                 className={`pellet ${
-        //                     status ? " pellet--green" : " pellet--red"
-        //                 }`}
-        //             ></span>
-        //             {title}
-        //         </Link>
-        //     </h2>
-        //     <p>{children}</p>
-        // </li>
     );
 }
