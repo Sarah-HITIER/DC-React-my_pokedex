@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import App from "./App";
-import { MainList, TypesList, Favoris, Contact } from "containers";
+import { MainList, TypesList, Favoris, Contact, Item } from "containers";
 
 import "./index.css";
 
@@ -23,7 +23,8 @@ const router = createBrowserRouter([
             { path: "/", element: <MainList /> },
             { path: "/types-list", element: <TypesList /> },
             { path: "/favorites", element: <Favoris /> },
-            { path: "/contact", element: <Contact /> }
+            { path: "/contact", element: <Contact /> },
+            { path: "/:name", element: <Item /> }
         ]
     }
 ]);
