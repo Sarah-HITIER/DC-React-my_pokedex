@@ -13,15 +13,21 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
 }));
 
 export default function MainList() {
-    let { isLoading, data: items, error } = useItems();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [searchValue, setSearchValue] = useState(searchParams.get("search"));
     const [page, setPage] = useState(1);
+    const [countPage, setCountPage] = useState(1);
+
+    const { isLoading, data, error } = useItems(page);
     const [filteredItems, setFilteredItems] = useState([]);
 
+    const [searchParams] = useSearchParams();
+    const [searchValue, setSearchValue] = useState(searchParams.get("search"));
+
     useEffect(() => {
-        setFilteredItems(items);
-    }, [items]);
+        if (data) {
+            setFilteredItems(data.results);
+            setCountPage(data.pages);
+        }
+    }, [data]);
 
     // if (!filteredItems || filteredItems.results.length === 0) {
     //     return "Items not found";
@@ -30,15 +36,10 @@ export default function MainList() {
     const handleChange = (ev) => {
         setSearchValue(ev.target.value);
         setFilteredItems(
-            items.filter((item) =>
+            data.results.filter((item) =>
                 item.name.includes(ev.target.value.toLowerCase())
             )
         );
-    };
-
-    const changePage = (event, value) => {
-        // { isLoading, data: items, error } = useItems(value);
-        setPage(value);
     };
 
     if (isLoading) return <Loading />;
@@ -51,9 +52,9 @@ export default function MainList() {
             ></SearchBar>
             <List items={filteredItems}></List>
             <StyledPagination
-                count={10}
+                count={countPage}
                 page={page}
-                onChange={changePage}
+                onChange={(_, value) => setPage(value)}
                 color="primary"
             />
         </>
