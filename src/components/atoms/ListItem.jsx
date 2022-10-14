@@ -10,7 +10,7 @@ import {
 import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { convertToUpperCase } from "utils";
+import { getImageById, convertToUpperCase } from "utils";
 
 const StyledCard = styled(Card)(({ theme }) => ({
     color: theme.palette.text.main,
@@ -21,23 +21,42 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 export default function Item({ id, name }) {
-    const [favorites, setFavorites] = useState([]);
+    const [favorites, setFavorites] = useState(
+        JSON.parse(localStorage.getItem("favorites")) || []
+    );
 
-    const handleFavorites = (event) => {
-        console.log("favorites" + name);
+    useEffect(() => {
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        window.dispatchEvent(new Event("storage"));
+    }, [favorites]);
+
+    const newFavorite = ({ id, name }) => {
+        let addFavorites = true;
+        let array = JSON.parse(localStorage.getItem("favorites")) || [];
+
+        array.map((item, key) => {
+            if (item.id === id) {
+                array.splice(key, 1);
+                addFavorites = false;
+            }
+        });
+        if (addFavorites) {
+            array.push({ id, name });
+        }
+        setFavorites(array);
     };
 
     return (
         <StyledCard sx={{ maxWidth: 345 }}>
             <CardMedia
                 component="img"
-                height="140"
-                image={
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
-                    id +
-                    ".png"
-                }
+                height="150"
+                image={getImageById(id)}
                 alt={convertToUpperCase(name)}
+                sx={{
+                    width: "auto",
+                    margin: "auto"
+                }}
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -49,7 +68,8 @@ export default function Item({ id, name }) {
                     display: "flex",
                     flexWrap: "wrap",
                     alignItems: "center",
-                    justifyContent: "space-between"
+                    justifyContent: "space-evenly",
+                    gap: 1
                 }}
             >
                 <Button
@@ -59,8 +79,11 @@ export default function Item({ id, name }) {
                 >
                     Learn More
                 </Button>
-                <Button variant="contained" onClick={handleFavorites}>
-                    {favorites.includes(name) ? (
+                <Button
+                    variant="contained"
+                    onClick={() => newFavorite({ id, name })}
+                >
+                    {favorites.some((fav) => fav.id === id) ? (
                         <Favorite />
                     ) : (
                         <FavoriteBorder />
