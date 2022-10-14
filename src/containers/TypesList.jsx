@@ -1,56 +1,65 @@
-import { List, TypesBar } from "components/molecules";
-import { Loading } from "components/atoms";
-import { useItems, useTypes } from "hooks";
-import { useState, useEffect } from "react";
-// import { useSearchParams } from "react-router-dom";
-import { styled, Pagination } from "@mui/material";
+import { List, TypesBar, PaginationComponent } from "components/molecules";
+import { TypesBanner, Loading } from "components/atoms";
 
-const StyledPagination = styled(Pagination)(({ theme }) => ({
-    marginTop: theme.spacing(2),
-    "& .MuiButtonBase-root, & .MuiPaginationItem-root": {
-        color: "white"
-    }
-}));
+import { useItemsByTypes, useTypes } from "hooks";
+
+import { useState, useEffect } from "react";
+import { Box, Typography } from "@mui/material";
 
 export default function TypesList() {
-    let { isLoading, data: items, error } = useTypes();
-    let { data: types } = useTypes();
     const [page, setPage] = useState(1);
+    const [countPage, setCountPage] = useState(1);
+
+    const [selectedType, setSelectedType] = useState("normal");
+
+    const { isLoading, data, error } = useItemsByTypes(selectedType, page);
     const [filteredItems, setFilteredItems] = useState([]);
+    const [numberOfItems, setNumberOfItems] = useState(0);
+
+    const { data: types } = useTypes();
 
     useEffect(() => {
-        setFilteredItems(items);
-    }, [items]);
+        if (data) {
+            setFilteredItems(data.results);
+            setCountPage(data.pages);
+            setNumberOfItems(data.count);
+        }
+    }, [data]);
 
-    // if (!filteredItems || filteredItems.results.length === 0) {
-    //     return "Items not found";
-    // }
-
-    // const handleChange = (ev) => {
-    //     setFilteredItems(
-    //         items.filter((item) =>
-    //             item.name.includes(ev.target.value.toLowerCase())
-    //         )
-    //     );
-    // };
-
-    const changePage = (event, value) => {
-        // { isLoading, data: items, error } = useItems(value);
-        setPage(value);
+    const handleSelectedType = (_, value) => {
+        setPage(1);
+        setSelectedType(value);
+        setNumberOfItems(data.count);
     };
 
     if (isLoading) return <Loading />;
 
     return (
         <>
-            <TypesBar types={types}></TypesBar>
+            <TypesBar
+                types={types}
+                handleSelectedType={handleSelectedType}
+            ></TypesBar>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "baseline",
+                    flexWrap: "wrap",
+                    mt: "24px"
+                }}
+            >
+                <TypesBanner type={selectedType}></TypesBanner>
+                <Typography sx={{ mt: "16px" }}>
+                    {numberOfItems} results
+                </Typography>
+            </Box>
             <List items={filteredItems}></List>
-            <StyledPagination
-                count={10}
+            <PaginationComponent
+                countPage={countPage}
                 page={page}
-                onChange={changePage}
-                color="primary"
-            />
+                handlePage={(_, value) => setPage(value)}
+            ></PaginationComponent>
         </>
     );
 }

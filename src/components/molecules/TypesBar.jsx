@@ -1,7 +1,7 @@
 import { TypesBanner } from "components/atoms";
-import { Tabs } from "@mui/material";
+import { Button, Tabs } from "@mui/material";
 
-export default function TypesBar({ types = [] }) {
+export default function TypesBar({ types = [], handleSelectedType }) {
     return (
         <>
             <Tabs
@@ -13,10 +13,22 @@ export default function TypesBar({ types = [] }) {
             >
                 {types.map((type) => {
                     return (
-                        <TypesBanner
-                            key={type.name}
-                            type={type.name}
-                        ></TypesBanner>
+                        <Button
+                            onClick={(event) =>
+                                handleSelectedType(event, type.name)
+                            }
+                            disableRipple
+                            sx={{
+                                color: "inherit",
+                                minWidth: "auto",
+                                padding: 0
+                            }}
+                        >
+                            <TypesBanner
+                                key={type.name}
+                                type={type.name}
+                            ></TypesBanner>
+                        </Button>
                     );
                 })}
             </Tabs>

@@ -19,7 +19,11 @@ export function useItemsByTypes(type = "", page = 1) {
                 });
             }
             let pages = Math.ceil(results.length / limit);
-            return { pages, results: results.slice(offset, offset + limit) };
+            return {
+                pages,
+                count: results.length,
+                results: results.slice(offset, offset + limit)
+            };
         },
         { keepPreviousData: true }
     );
