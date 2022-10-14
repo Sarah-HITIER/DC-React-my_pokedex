@@ -22,7 +22,10 @@ export default function Item() {
     return (
         <>
             <Typography variant="h4">{title}</Typography>
-            <img src={item.sprites.front_default} alt={`${title}`}></img>
+            <img
+                src={item.sprites.other.home.front_default}
+                alt={`${title}`}
+            ></img>
             <p>Weight : {item.weight}</p>
             <p>Height : {item.height}</p>
 
