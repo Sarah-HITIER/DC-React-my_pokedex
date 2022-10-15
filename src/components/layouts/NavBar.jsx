@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
     Container,
     AppBar,
@@ -12,18 +12,18 @@ import {
     Typography
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import { Link as RouterLink } from "react-router-dom";
 
 import mainLogo from "assets/logo.png";
 
 const pages = [
     { name: "Types", path: "/types-list" },
-    { name: "Favoris", path: "/favorites" },
-    { name: "Contact", path: "/contact" }
+    { name: "Favoris", path: "/favorites" }
 ];
 
-export default function NavBar() {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
+export default function NavBar({ handleClickOpen }) {
+    const [anchorElNav, setAnchorElNav] = useState(null);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -56,8 +56,6 @@ export default function NavBar() {
                         }}
                     >
                         <IconButton
-                            size="large"
-                            aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
@@ -118,17 +116,53 @@ export default function NavBar() {
                             display: { xs: "none", md: "flex" }
                         }}
                     >
-                        {pages.map((page) => (
-                            <Button
-                                component={RouterLink}
-                                to={page.path}
-                                key={page.name}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: "white", display: "block" }}
-                            >
-                                {page.name}
-                            </Button>
-                        ))}
+                        <Box
+                            sx={{
+                                flexGrow: 1,
+                                display: "flex"
+                            }}
+                        >
+                            {pages.map((page) => (
+                                <Button
+                                    component={RouterLink}
+                                    to={page.path}
+                                    key={page.name}
+                                    onClick={handleCloseNavMenu}
+                                    sx={{
+                                        my: 2,
+                                        color: "white",
+                                        display: "block"
+                                    }}
+                                >
+                                    {page.name}
+                                </Button>
+                            ))}
+                        </Box>
+                        <Button
+                            sx={{
+                                my: 2,
+                                color: "white",
+                                display: "block"
+                            }}
+                            onClick={handleClickOpen}
+                        >
+                            Contact
+                        </Button>
+                    </Box>
+
+                    {/* ContactIcon */}
+                    <Box
+                        sx={{
+                            display: { xs: "flex", md: "none" }
+                        }}
+                    >
+                        <IconButton
+                            aria-haspopup="true"
+                            onClick={handleClickOpen}
+                            color="inherit"
+                        >
+                            <MailOutlinedIcon />
+                        </IconButton>
                     </Box>
                 </Toolbar>
             </Container>

@@ -34,7 +34,6 @@ const SearchBar = ({ value, handleChange }) => (
             placeholder="Search…"
             inputProps={{ "aria-label": "search" }}
             defaultValue={value}
-            // value={searchValue}
             onChange={handleChange}
         />
     </Search>

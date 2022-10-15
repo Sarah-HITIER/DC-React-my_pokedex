@@ -1,4 +1,3 @@
-export { default as NavBar } from "./NavBar";
 export { default as MainList } from "./MainList";
 export { default as Item } from "./Item";
 export { default as TypesList } from "./TypesList";

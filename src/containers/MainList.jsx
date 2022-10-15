@@ -11,10 +11,7 @@ export default function MainList() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const { isLoading, data, error } = useItems(
-        searchParams.get("search"),
-        page
-    );
+    const { isLoading, data } = useItems(searchParams.get("search"), page);
     const [filteredItems, setFilteredItems] = useState([]);
     const [numberOfItems, setNumberOfItems] = useState(0);
 

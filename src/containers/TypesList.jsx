@@ -12,7 +12,7 @@ export default function TypesList() {
 
     const [selectedType, setSelectedType] = useState("normal");
 
-    const { isLoading, data, error } = useItemsByTypes(selectedType, page);
+    const { isLoading, data } = useItemsByTypes(selectedType, page);
     const [filteredItems, setFilteredItems] = useState([]);
     const [numberOfItems, setNumberOfItems] = useState(0);
 

@@ -1,19 +1,21 @@
 import { TypesBanner } from "components/atoms";
-import { Button, Tabs } from "@mui/material";
+import { Button, Box } from "@mui/material";
 
 export default function TypesBar({ types = [], handleSelectedType }) {
     return (
         <>
-            <Tabs
-                variant="scrollable"
-                scrollButtons
-                allowScrollButtonsMobile
-                aria-label="scrollable auto tabs"
-                sx={{ alignItems: "center" }}
+            <Box
+                sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 2,
+                    justifyContent: "center"
+                }}
             >
                 {types.map((type) => {
                     return (
                         <Button
+                            key={type.name}
                             onClick={(event) =>
                                 handleSelectedType(event, type.name)
                             }
@@ -31,7 +33,7 @@ export default function TypesBar({ types = [], handleSelectedType }) {
                         </Button>
                     );
                 })}
-            </Tabs>
+            </Box>
         </>
     );
 }

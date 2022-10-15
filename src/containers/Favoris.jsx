@@ -11,6 +11,7 @@ export default function Favoris() {
         JSON.parse(localStorage.getItem("favorites")) || []
     );
     const [filteredFavorites, setFilteredFavorites] = useState(favorites);
+    const [isLoading, setLoading] = useState(false);
 
     const [page, setPage] = useState(1);
 
@@ -20,6 +21,7 @@ export default function Favoris() {
     const [numberOfItems, setNumberOfItems] = useState(favorites.length);
 
     useEffect(() => {
+        setLoading(true);
         window.addEventListener("storage", () => {
             setFavorites(JSON.parse(localStorage.getItem("favorites")));
         });
@@ -27,13 +29,13 @@ export default function Favoris() {
         setCountPage(Math.ceil(favorites.length / limit));
         const offset = limit * (page - 1);
         let newFilteredFavorites = favorites.slice(offset, offset + limit);
-        if (newFilteredFavorites.length === 0) setPage(page - 1);
+        if (favorites.length > 0 && newFilteredFavorites.length === 0)
+            setPage(page - 1);
         setFilteredFavorites(newFilteredFavorites);
+        setLoading(false);
     }, [favorites, page]);
 
-    // let { isLoading, data: items, error } = useItems();
-
-    // if (isLoading) return <Loading />;
+    if (isLoading) return <Loading />;
 
     return (
         <>
